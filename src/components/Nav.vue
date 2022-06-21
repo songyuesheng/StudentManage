@@ -15,8 +15,8 @@
             <el-menu-item index="2-2">2020计应2班</el-menu-item>
             <el-menu-item index="2-3" @click="jumpTo">2020计应9班</el-menu-item>
         </el-submenu>
-          <el-menu-item @click="logout" v-if="islogin">注销</el-menu-item>
-          <el-menu-item index="/login" v-if="!islogin">登录</el-menu-item>
+          <el-menu-item @click="logout">注销</el-menu-item>
+          <el-menu-item index="/login">登录</el-menu-item>
       </el-menu>
 </div>
 </template>
