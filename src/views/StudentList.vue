@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="studentList">
-      <el-button type="primary" class="addBtu" @click="addIsShow=true">添加学生</el-button>
+      <el-button type="primary" class="addBtu" @click="addIsShow = true">添加学生</el-button>
       <el-table :data="tableData" border style="width: 100%;">
         <el-table-column prop="studentClass" label="班级" width="120">
         </el-table-column>
@@ -30,35 +30,59 @@
                 <el-button slot="reference" type="text" size="small">删除</el-button>
               </el-popconfirm>
             </div>
-            <el-button type="text" size="small">编辑</el-button>
+            <el-button type="text" size="small" @click="addIsShow = true">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <div class="addStuBox" v-show="addIsShow">
-      <!--      <el-radio-group v-model="labelPosition" size="small">-->
-      <!--        <el-radio-button label="left">左对齐</el-radio-button>-->
-      <!--        <el-radio-button label="right">右对齐</el-radio-button>-->
-      <!--        <el-radio-button label="top">顶部对齐</el-radio-button>-->
-      <!--      </el-radio-group>-->
+    <div class="Box" v-show="addIsShow">
+      <div class="addStuBox">
+        <!--      <el-radio-group v-model="labelPosition" size="small">-->
+        <!--        <el-radio-button label="left">左对齐</el-radio-button>-->
+        <!--        <el-radio-button label="right">右对齐</el-radio-button>-->
+        <!--        <el-radio-button label="top">顶部对齐</el-radio-button>-->
+        <!--      </el-radio-group>-->
 
-      <div style="margin: 20px;"></div>
-      <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
-        <el-form-item label="班级">
-          <el-input v-model="newStuInfo.name"></el-input>
-        </el-form-item>
-        <el-form-item label="学号">
-          <el-input v-model="newStuInfo.region"></el-input>
-        </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="newStuInfo.type"></el-input>
-        </el-form-item>
-      </el-form>
-      <div class="scBtu">
-        <el-button type="success" >保存</el-button>
-        <el-button type="danger" @click="addIsShow=false">关闭</el-button>
+        <div style="margin: 20px;"></div>
+        <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
+          <el-form-item label="班级">
+            <el-input v-model="newStuInfo.name"></el-input>
+          </el-form-item>
+          <el-form-item label="学号">
+            <el-input v-model="newStuInfo.region"></el-input>
+          </el-form-item>
+          <el-form-item label="姓名">
+            <el-input v-model="newStuInfo.type"></el-input>
+          </el-form-item>
+          <el-form-item label="性别">
+            <el-input v-model="newStuInfo.gender"></el-input>
+          </el-form-item>
+          <el-form-item label="专业">
+            <el-input v-model="newStuInfo.major"></el-input>
+          </el-form-item>
+          <el-form-item label="身份证号">
+            <el-input v-model="newStuInfo.id"></el-input>
+          </el-form-item>
+          <el-form-item label="出生年月">
+            <el-input v-model="newStuInfo.birth"></el-input>
+          </el-form-item>
+          <el-form-item label="政治面貌">
+            <el-input v-model="newStuInfo.political"></el-input>
+          </el-form-item>
+          <el-form-item label="民族">
+            <el-input v-model="newStuInfo.nation"></el-input>
+          </el-form-item>
+          <el-form-item label="家庭住址">
+            <el-input v-model="newStuInfo.address"></el-input>
+          </el-form-item>
+        </el-form>
+        <div class="scBtu">
+          <el-button type="success">保存</el-button>
+          <el-button type="danger" @click="addIsShow = false">关闭</el-button>
+        </div>
+
+
       </div>
-
     </div>
   </div>
 
@@ -88,7 +112,14 @@ export default {
       newStuInfo: {
         name: '',
         region: '',
-        type: ''
+        type: '',
+        gender: '',
+        major: '',
+        id: '',
+        birth: '',
+        political: '',
+        nation: '',
+        address: ''
       }
     }
   },
@@ -129,18 +160,30 @@ export default {
 .delbutton {
   display: inline;
 }
+
 .addBtu {
   margin: 10px 20px;
   float: right;
 }
-.addStuBox {
-  border: 10px solid;
-  width: 40vw;
-  height: 50vh;
+
+.Box {
+  width: 45vw;
+  height: 95vh;
   position: absolute;
   top: 20vh;
+  border-radius: 10px;
   left: 30vw;
+  border: 2px solid black;
 }
+
+.addStuBox {
+  width: 40vw;
+  height: 90vh;
+  backdrop-filter: blur(50px);
+  border-radius: 10px;
+  /* opacity: 0.5; */
+}
+
 .scBtu {
   text-align: center;
 }
