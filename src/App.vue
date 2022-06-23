@@ -36,4 +36,11 @@ body{
 #app{
   height: 100%;
 }
+.nav{
+  position: fixed;
+  width: 100vw;
+  z-index: 1000;
+  display: block;
+  top: 0;
+}
 </style>

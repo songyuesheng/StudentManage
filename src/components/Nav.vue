@@ -1,13 +1,8 @@
 <template>
+  <div class="header">
 <div class="nav">
     <!-- <div class="line"></div> -->
-      <el-menu
-          router
-          class="el-menu-demo"
-          mode="horizontal"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b">
+      <el-menu router class="el-menu-demo" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
             <el-menu-item index="/index">首页</el-menu-item>
         <el-submenu index="2">
             <template slot="title">我的班级</template>
@@ -19,6 +14,7 @@
           <el-menu-item index="/login">登录</el-menu-item>
       </el-menu>
 </div>
+  </div>
 </template>
 
 
@@ -58,5 +54,7 @@ export default {
 
 
 <style>
-
+.header{
+  height: 60px;
+}
 </style>

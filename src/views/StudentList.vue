@@ -30,7 +30,7 @@
                 <el-button slot="reference" type="text" size="small">删除</el-button>
               </el-popconfirm>
             </div>
-            <el-button type="text" size="small" @click="addIsShow = true">编辑</el-button>
+            <el-button type="text" size="small" @click="editStuInfo(scope.row.studentId)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,41 +44,42 @@
         <!--      </el-radio-group>-->
 
         <div style="margin: 20px;"></div>
-        <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
+        <el-form :label-position="labelPosition" label-width="80px">
           <el-form-item label="班级">
-            <el-input v-model="newStuInfo.name"></el-input>
+            <el-input v-model="newStuInfo.studentClass"></el-input>
           </el-form-item>
           <el-form-item label="学号">
-            <el-input v-model="newStuInfo.region"></el-input>
+            <el-input v-model="newStuInfo.studentId"></el-input>
           </el-form-item>
           <el-form-item label="姓名">
-            <el-input v-model="newStuInfo.type"></el-input>
+            <el-input v-model="newStuInfo.studentName"></el-input>
           </el-form-item>
           <el-form-item label="性别">
-            <el-input v-model="newStuInfo.gender"></el-input>
+            <el-input v-model="newStuInfo.studentSex"></el-input>
           </el-form-item>
           <el-form-item label="专业">
-            <el-input v-model="newStuInfo.major"></el-input>
+            <el-input v-model="newStuInfo.studentMajor"></el-input>
           </el-form-item>
           <el-form-item label="身份证号">
-            <el-input v-model="newStuInfo.id"></el-input>
+            <el-input v-model="newStuInfo.studentIdNum"></el-input>
           </el-form-item>
           <el-form-item label="出生年月">
-            <el-input v-model="newStuInfo.birth"></el-input>
+            <el-input v-model="newStuInfo.studentBirthday"></el-input>
           </el-form-item>
           <el-form-item label="政治面貌">
-            <el-input v-model="newStuInfo.political"></el-input>
+            <el-input v-model="newStuInfo.politicalOutlook"></el-input>
           </el-form-item>
           <el-form-item label="民族">
-            <el-input v-model="newStuInfo.nation"></el-input>
+            <el-input v-model="newStuInfo.studentNation"></el-input>
           </el-form-item>
           <el-form-item label="家庭住址">
-            <el-input v-model="newStuInfo.address"></el-input>
+            <el-input v-model="newStuInfo.homeAddress"></el-input>
           </el-form-item>
         </el-form>
         <div class="scBtu">
-          <el-button type="success">保存</el-button>
-          <el-button type="danger" @click="addIsShow = false">关闭</el-button>
+          <el-button type="success" @click="saveNewInfo" v-if="!editBtuIsShow">保存</el-button>
+          <el-button type="success" @click="editNewInfo" v-if="editBtuIsShow">编辑</el-button>
+          <el-button type="danger" @click="closeBox">关闭</el-button>
         </div>
 
 
@@ -94,6 +95,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      editBtuIsShow:false,
       addIsShow: false,
       tableData: [{
         id: '',
@@ -110,24 +112,24 @@ export default {
       }],
       labelPosition: 'right',
       newStuInfo: {
-        name: '',
-        region: '',
-        type: '',
-        gender: '',
-        major: '',
-        id: '',
-        birth: '',
-        political: '',
-        nation: '',
-        address: ''
+        studentName: '',
+        studentId: '',
+        studentClass: '',
+        studentSex: '',
+        studentMajor: '',
+        studentIdNum: '',
+        studentBirthday: '',
+        politicalOutlook: '',
+        studentNation: '',
+        homeAddress: ''
       }
     }
   },
   created() {
-    this.geiStudentList()
+    this.getStudentList()
   },
   methods: {
-    geiStudentList() {
+    getStudentList() {
       axios({
         url: '/api/studentList',
         method: 'GET',
@@ -147,10 +149,64 @@ export default {
           "Authorization": localStorage.getItem("token")
         }
       }).then(res => {
+        this.$router.push('/StudentList')
         console.log(res)
       })
     },
-
+    saveNewInfo() {
+      axios({
+        url: '/api/addStu',
+        method: 'POST',
+        headers: {
+          "Authorization": localStorage.getItem("token")
+        },
+        data: this.newStuInfo
+      }).then(res => {
+        this.successInfo()
+        console.log(res)
+        this.addIsShow = false
+        this.$router.push('/StudentList')
+      })
+    },
+    successInfo() {
+      this.$message({
+        message: '添加成功',
+        type: 'success'
+      });
+    },
+    editStuInfo(StuId) {
+      this.editBtuIsShow = true
+      console.log(StuId)
+      axios({
+        url: '/api/stuInfo/' + StuId,
+        method: 'GET',
+        headers: {
+          "Authorization": localStorage.getItem("token")
+        },
+      }).then(res=>{
+        this.newStuInfo = res.data.data[0]
+        this.addIsShow = true
+        console.log(res)
+      })
+    },
+    editNewInfo(){
+        axios({
+          url:'/api/editStu',
+          method:'POST',
+          headers: {
+            "Authorization": localStorage.getItem("token")
+          },
+          data:this.newStuInfo
+        }).then(res=>{
+          this.addIsShow = false
+          this.$router.push('/StudentList')
+          console.log(res)
+        })
+    },
+    closeBox(){
+      this.addIsShow = false
+      this.editBtuIsShow = false
+    }
   }
 }
 
@@ -170,16 +226,20 @@ export default {
   width: 45vw;
   height: 95vh;
   position: absolute;
-  top: 20vh;
+  top: 1vh;
   border-radius: 10px;
   left: 30vw;
   border: 2px solid black;
+  backdrop-filter: blur(50px);
+  z-index: 10001;
+  padding-bottom: 2vh;
+
 }
 
 .addStuBox {
   width: 40vw;
   height: 90vh;
-  backdrop-filter: blur(50px);
+  /*backdrop-filter: blur(50px);*/
   border-radius: 10px;
   /* opacity: 0.5; */
 }
